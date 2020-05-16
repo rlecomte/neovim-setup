@@ -11,6 +11,7 @@ Plug 'https://github.com/sheerun/vim-polyglot.git'
 Plug 'https://github.com/rust-lang/rust.vim.git'
 Plug 'https://github.com/neoclide/coc.nvim', {'branch': 'release'}
 Plug 'https://github.com/lifepillar/vim-gruvbox8'
+Plug 'https://github.com/airblade/vim-gitgutter.git'
 " Initialize plugin system
 call plug#end()
 
@@ -54,7 +55,8 @@ highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE gui
 let g:netrw_localrmdir='rm -r'
 augroup ProjectDrawer
   autocmd!
-  nmap <C-f> :Explore<CR>
+  nmap <C-f> :CocCommand explorer<CR>
+  "nmap <C-f> :Explore<CR>
 augroup END
 
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
