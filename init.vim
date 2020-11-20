@@ -12,6 +12,9 @@ Plug 'https://github.com/rust-lang/rust.vim.git'
 Plug 'https://github.com/neoclide/coc.nvim', {'branch': 'release'}
 Plug 'https://github.com/lifepillar/vim-gruvbox8'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
+Plug 'preservim/nerdtree'
+"Plug 'wellle/context.vim'
+Plug 'vim-scripts/dbext.vim'
 " Initialize plugin system
 call plug#end()
 
@@ -32,6 +35,8 @@ set tabstop=4     "A tab is 4 spaces
 set expandtab     "Always uses spaces instead of tabs
 set softtabstop=2 "Insert 4 spaces when tab is pressed
 set shiftwidth=4  "An indent is 4 spaces
+
+set rtp+=~/.fzf
 
 " remap escape edit mode
 inoremap <esc> <nop>
@@ -55,6 +60,7 @@ highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE gui
 let g:netrw_localrmdir='rm -r'
 augroup ProjectDrawer
   autocmd!
+  "map <C-f> :NERDTreeToggle<CR>
   nmap <C-f> :CocCommand explorer<CR>
   "nmap <C-f> :Explore<CR>
 augroup END
@@ -64,3 +70,5 @@ autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 "autocmd FileType json setlocal ts=2 sw=2
 "autocmd FileType yaml setlocal ts=2 sw=2
 "autocmd FileType sql setlocal ts=2 sw=2
+
+source ~/.config/nvim/scala.vim

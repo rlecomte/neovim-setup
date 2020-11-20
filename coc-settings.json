@@ -18,5 +18,6 @@
         "haskell"
       ]
     }
-  }
+  },
+  "coc.preferences.formatOnSaveFiletypes": ["scala"]
 }
