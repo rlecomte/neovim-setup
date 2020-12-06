@@ -46,7 +46,7 @@ set rtp+=~/.fzf
 
 " remap escape edit mode
 inoremap <esc> <nop>
-inoremap jk <esc>
+inoremap ,, <esc>
 
 " resize
 " delete all buffer but this one
