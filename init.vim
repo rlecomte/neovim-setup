@@ -15,6 +15,8 @@ Plug 'https://github.com/airblade/vim-gitgutter.git'
 Plug 'preservim/nerdtree'
 "Plug 'wellle/context.vim'
 Plug 'vim-scripts/dbext.vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'sdiehl/vim-ormolu'
 " Initialize plugin system
 call plug#end()
 
@@ -36,12 +38,17 @@ set expandtab     "Always uses spaces instead of tabs
 set softtabstop=2 "Insert 4 spaces when tab is pressed
 set shiftwidth=4  "An indent is 4 spaces
 
+"fold
+"setlocal foldlevel=3
+"set foldmethod=indent
+
 set rtp+=~/.fzf
 
 " remap escape edit mode
 inoremap <esc> <nop>
 inoremap jk <esc>
 
+" resize
 " delete all buffer but this one
 nmap <C-n> :Bonly<CR>
 
