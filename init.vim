@@ -45,12 +45,12 @@ set shiftwidth=4  "An indent is 4 spaces
 set rtp+=~/.fzf
 
 " remap escape edit mode
-inoremap <esc> <nop>
+"inoremap <esc> <nop>
 inoremap ,, <esc>
 
 " resize
 " delete all buffer but this one
-nmap <C-n> :Bonly<CR>
+nmap <C-q> :Bonly<CR>
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
@@ -68,7 +68,7 @@ let g:netrw_localrmdir='rm -r'
 augroup ProjectDrawer
   autocmd!
   "map <C-f> :NERDTreeToggle<CR>
-  nmap <C-f> :CocCommand explorer<CR>
+  nmap <C-e> :CocCommand explorer<CR>
   "nmap <C-f> :Explore<CR>
 augroup END
 
@@ -79,3 +79,11 @@ autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 "autocmd FileType sql setlocal ts=2 sw=2
 
 source ~/.config/nvim/scala.vim
+
+" {cr} = « gauche / droite »
+noremap c h
+noremap r l
+" {ts} = « haut / bas »
+noremap t j
+noremap s k
+
