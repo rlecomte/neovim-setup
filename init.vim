@@ -8,15 +8,15 @@ Plug 'https://github.com/schickling/vim-bufonly'
 Plug 'https://github.com/ap/vim-buftabline.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/sheerun/vim-polyglot.git'
-Plug 'https://github.com/rust-lang/rust.vim.git'
 Plug 'https://github.com/neoclide/coc.nvim', {'branch': 'release'}
 Plug 'https://github.com/lifepillar/vim-gruvbox8'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
-Plug 'preservim/nerdtree'
+"Plug 'preservim/nerdtree'
+"Plug 'https://github.com/rust-lang/rust.vim.git'
 "Plug 'wellle/context.vim'
-Plug 'vim-scripts/dbext.vim'
-Plug 'ryanoasis/vim-devicons'
-Plug 'sdiehl/vim-ormolu'
+"Plug 'vim-scripts/dbext.vim'
+"Plug 'ryanoasis/vim-devicons'
+"Plug 'sdiehl/vim-ormolu'
 " Initialize plugin system
 call plug#end()
 
@@ -68,8 +68,8 @@ let g:netrw_localrmdir='rm -r'
 augroup ProjectDrawer
   autocmd!
   "map <C-f> :NERDTreeToggle<CR>
-  nmap <C-e> :CocCommand explorer<CR>
-  "nmap <C-f> :Explore<CR>
+  "nmap <C-e> :CocCommand explorer<CR>
+  nmap <C-e> :Explore<CR>
 augroup END
 
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
