@@ -2,21 +2,18 @@ call plug#begin('~/.config/nvim/cache-plug/')
 
 " plugins
 Plug 'https://github.com/Raimondi/delimitMate.git'
-Plug 'https://github.com/junegunn/fzf.vim.git'
-Plug 'https://github.com/itchyny/lightline.vim'
-Plug 'https://github.com/schickling/vim-bufonly'
-Plug 'https://github.com/ap/vim-buftabline.git'
-Plug 'https://github.com/tpope/vim-fugitive.git'
-Plug 'https://github.com/sheerun/vim-polyglot.git'
-Plug 'https://github.com/neoclide/coc.nvim', {'branch': 'release'}
-Plug 'https://github.com/lifepillar/vim-gruvbox8'
-Plug 'https://github.com/airblade/vim-gitgutter.git'
-"Plug 'preservim/nerdtree'
-"Plug 'https://github.com/rust-lang/rust.vim.git'
-"Plug 'wellle/context.vim'
-"Plug 'vim-scripts/dbext.vim'
-"Plug 'ryanoasis/vim-devicons'
-"Plug 'sdiehl/vim-ormolu'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'ap/vim-buftabline'
+Plug 'tpope/vim-fugitive'
+Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'airblade/vim-gitgutter'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'sdiehl/vim-ormolu'
 " Initialize plugin system
 call plug#end()
 
@@ -38,19 +35,9 @@ set expandtab     "Always uses spaces instead of tabs
 set softtabstop=2 "Insert 4 spaces when tab is pressed
 set shiftwidth=4  "An indent is 4 spaces
 
-"fold
-"setlocal foldlevel=3
-"set foldmethod=indent
-
-set rtp+=~/.fzf
-
 " remap escape edit mode
 "inoremap <esc> <nop>
-inoremap ,, <esc>
-
-" resize
-" delete all buffer but this one
-nmap <C-q> :Bonly<CR>
+""inoremap ,, <esc>
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
@@ -73,17 +60,15 @@ augroup ProjectDrawer
 augroup END
 
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-"autocmd FileType javascript setlocal ts=2 sw=2
-"autocmd FileType json setlocal ts=2 sw=2
-"autocmd FileType yaml setlocal ts=2 sw=2
-"autocmd FileType sql setlocal ts=2 sw=2
+autocmd FileType javascript setlocal ts=2 sw=2
+autocmd FileType json setlocal ts=2 sw=2
+autocmd FileType yaml setlocal ts=2 sw=2
+autocmd FileType sql setlocal ts=2 sw=2
 
-source ~/.config/nvim/scala.vim
+autocmd BufWritePre * %s/\s\+$//e
 
-" {cr} = « gauche / droite »
-noremap c h
-noremap r l
-" {ts} = « haut / bas »
-noremap t j
-noremap s k
-
+augroup ReactFiletypes
+  autocmd!
+  autocmd BufRead,BufNewFile *.jsx set filetype=javascriptreact
+  autocmd BufRead,BufNewFile *.tsx set filetype=typescriptreact
+augroup END

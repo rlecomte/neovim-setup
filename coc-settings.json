@@ -15,6 +15,6 @@
         "rootPatterns": ["Cargo.toml"]
     }
   },
-  "explorer.icon.enableNerdfont": true,
-  "coc.preferences.formatOnSaveFiletypes": ["scala", "rust"]
+  "tsserver.log": "verbose",
+  "coc.preferences.formatOnSaveFiletypes": ["scala", "rust", "typescript", "typescriptreact", "javascript", "javascriptreact"]
 }
