@@ -8,13 +8,9 @@
       "args": ["--lsp"],
       "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml"],
       "filetypes": ["haskell", "lhaskell"]
-    },
-    "rust": {
-        "command": "rust-analyzer",
-        "filetypes": ["rust"],
-        "rootPatterns": ["Cargo.toml"]
     }
   },
   "tsserver.log": "verbose",
-  "coc.preferences.formatOnSaveFiletypes": ["scala", "rust", "typescript", "typescriptreact", "javascript", "javascriptreact"]
+  "coc.preferences.formatOnSaveFiletypes": ["scala", "rust", "typescript", "typescriptreact", "javascript", "javascriptreact"],
+  "codeLens.enable": true
 }

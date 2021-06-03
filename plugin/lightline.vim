@@ -8,3 +8,5 @@ let g:lightline = {
       \   'gitbranch': 'fugitive#head'
       \ },
       \ }
+
+set laststatus=2

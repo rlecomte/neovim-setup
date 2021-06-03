@@ -1,4 +1,4 @@
 set hidden
 
-nnoremap <C-r> :bprev<CR>
-nnoremap <C-n> :bnext<CR>
+nnoremap <C-l> :bprev<CR>
+nnoremap <C-j> :bnext<CR>
