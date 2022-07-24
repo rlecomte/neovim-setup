@@ -17,6 +17,9 @@ Plug 'airblade/vim-gitgutter'
 "Plug 'sdiehl/vim-ormolu'
 Plug 'easymotion/vim-easymotion'
 " Initialize plugin system
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
 call plug#end()
 
 " general
@@ -71,7 +74,8 @@ set nrformats-=octal
 "set spell
 
 "copy to clipboard (+y)
-set clipboard+=unnamedplus
+set clipboard=unnamedplus
+vnoremap <C-c> +y
 set termguicolors
 set t_Co=256
 
@@ -112,3 +116,8 @@ autocmd FileType yaml setlocal ts=2 sw=2
 autocmd FileType sql setlocal ts=2 sw=2
 
 autocmd BufWritePre * %s/\s\+$//e
+
+let g:opamshare = substitute(system('opam var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+
+set rtp^="/home/rlecomte/.opam/default/share/ocp-indent/vim"
