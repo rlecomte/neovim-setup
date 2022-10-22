@@ -4,6 +4,7 @@ lua require('lua-line')
 lua require('scala')
 lua require('ocaml')
 lua require('snip-config')
+lua require('telescope-config')
 
 " general
 set nocompatible
@@ -23,7 +24,7 @@ set ruler
 set wildmenu
 set cursorline
 set number
-set relativenumber
+"set relativenumber
 set mouse=a
 set title
 

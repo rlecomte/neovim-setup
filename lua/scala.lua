@@ -138,7 +138,11 @@ metals_config.init_options.statusBarProvider = "on"
 -- Example of settings
 metals_config.settings = {
   showImplicitArguments = true,
-  excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+  excludedPackages = {
+    "akka.actor.typed.javadsl",
+    "com.github.swagger.akka.javadsl",
+    "sttp.tapir.EndpointIO.annotations"
+  },
 }
 
 -- *READ THIS*

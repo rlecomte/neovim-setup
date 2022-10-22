@@ -18,15 +18,10 @@ return require('packer').startup(function(use)
 
   use 'neovim/nvim-lspconfig'
 
-  --use 'honza/vim-snippets'
-
   use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
-
-  use { 'junegunn/fzf', run = ":call fzf#install()" }
-  use 'junegunn/fzf.vim'
 
   use {
        "hrsh7th/nvim-cmp",
@@ -47,6 +42,11 @@ return require('packer').startup(function(use)
       "nvim-lua/plenary.nvim",
       "mfussenegger/nvim-dap",
     },
+  }
+
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+    requires = { 'nvim-lua/plenary.nvim' }
   }
 
   --use {

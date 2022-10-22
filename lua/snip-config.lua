@@ -19,15 +19,6 @@ local postfix = require("luasnip.extras.postfix").postfix
 
 ls.add_snippets("all", s("ternary", {}))
 
-ls.add_snippets("all", {
-	s("autotrigger", {
-		t("autosnippet"),
-	}),
-}, {
-	type = "autosnippets",
-	key = "all_auto",
-})
-
-require("luasnip.loaders.from_vscode").load()
-require("luasnip.loaders.from_vscode").load({paths = "~/.config/nvim/snippets"})
---require("luasnip.loaders.from_lua").load({ include = { "all", "cpp" } })
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.config/nvim/snippets"})
+require("luasnip.loaders.from_lua").load({ include = { "all", "cpp" } })
