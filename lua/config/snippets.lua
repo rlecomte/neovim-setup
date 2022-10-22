@@ -18,11 +18,11 @@ local l = extras.l
 local rep = extras.rep
 local postfix = require("luasnip.extras.postfix").postfix
 
-ls.add_snippets(nil, {
-  all = {
-    s("ternary", {})
-  }
-})
+--ls.add_snippets(nil, {
+--  all = {
+--    s("ternary", {}),
+--  }
+--})
 
 require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.config/nvim/snippets"})
