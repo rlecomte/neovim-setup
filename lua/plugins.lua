@@ -14,19 +14,30 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
-  use({ "ellisonleao/gruvbox.nvim" })
+  use 'ellisonleao/gruvbox.nvim'
+
+  use 'neovim/nvim-lspconfig'
+
+  --use 'honza/vim-snippets'
+
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+  }
 
   use { 'junegunn/fzf', run = ":call fzf#install()" }
-  use { 'junegunn/fzf.vim' }
+  use 'junegunn/fzf.vim'
 
   use {
        "hrsh7th/nvim-cmp",
        requires = {
            "hrsh7th/cmp-buffer",
            "hrsh7th/cmp-nvim-lsp",
-           "hrsh7th/cmp-vsnip",
-           "hrsh7th/vim-vsnip",
+           'L3MON4D3/LuaSnip',
+           'rafamadriz/friendly-snippets',
+           'saadparwaiz1/cmp_luasnip',
            'hrsh7th/cmp-path',
+           'dcampos/cmp-snippy',
        }
   }
 
@@ -36,13 +47,6 @@ return require('packer').startup(function(use)
       "nvim-lua/plenary.nvim",
       "mfussenegger/nvim-dap",
     },
-  }
-
-  use('neovim/nvim-lspconfig')
-
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
 
   --use {

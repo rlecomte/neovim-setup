@@ -74,45 +74,15 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["cmp-buffer"] = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/cmp-buffer",
-    url = "https://github.com/hrsh7th/cmp-buffer"
-  },
   ["cmp-nvim-lsp"] = {
     loaded = true,
     path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
-  ["cmp-path"] = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/cmp-path",
-    url = "https://github.com/hrsh7th/cmp-path"
-  },
   ["cmp-vsnip"] = {
     loaded = true,
     path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/cmp-vsnip",
     url = "https://github.com/hrsh7th/cmp-vsnip"
-  },
-  fzf = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/fzf",
-    url = "https://github.com/junegunn/fzf"
-  },
-  ["fzf.vim"] = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/fzf.vim",
-    url = "https://github.com/junegunn/fzf.vim"
-  },
-  ["gruvbox.nvim"] = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
-    url = "https://github.com/ellisonleao/gruvbox.nvim"
-  },
-  ["lualine.nvim"] = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/lualine.nvim",
-    url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   ["nvim-cmp"] = {
     loaded = true,
@@ -124,25 +94,15 @@ _G.packer_plugins = {
     path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/nvim-dap",
     url = "https://github.com/mfussenegger/nvim-dap"
   },
-  ["nvim-lspconfig"] = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
-    url = "https://github.com/neovim/nvim-lspconfig"
-  },
   ["nvim-metals"] = {
     loaded = true,
     path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/nvim-metals",
     url = "https://github.com/scalameta/nvim-metals"
   },
-  ["nvim-web-devicons"] = {
+  ["packer.nvim"] = {
     loaded = false,
     needs_bufread = false,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/opt/nvim-web-devicons",
-    url = "https://github.com/kyazdani42/nvim-web-devicons"
-  },
-  ["packer.nvim"] = {
-    loaded = true,
-    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/start/packer.nvim",
+    path = "/home/rlecomte/.local/share/nvim/site/pack/packer/opt/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
   ["plenary.nvim"] = {

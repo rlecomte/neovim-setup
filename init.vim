@@ -3,6 +3,7 @@ lua require('cmp-config')
 lua require('lua-line')
 lua require('scala')
 lua require('ocaml')
+lua require('snip-config')
 
 " general
 set nocompatible
