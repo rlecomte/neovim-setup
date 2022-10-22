@@ -1,26 +1,8 @@
-call plug#begin('~/.config/nvim/cache-plug/')
-
-" plugins
-Plug 'Raimondi/delimitMate'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-"Plug 'itchyny/lightline.vim'
-"Plug 'ap/vim-buftabline'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'
-Plug 'sheerun/vim-polyglot'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'lifepillar/vim-gruvbox8'
-Plug 'airblade/vim-gitgutter'
-"Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-"Plug 'sdiehl/vim-ormolu'
-Plug 'easymotion/vim-easymotion'
-" Initialize plugin system
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
-call plug#end()
+lua require('plugins')
+lua require('cmp-config')
+lua require('lua-line')
+lua require('scala')
+lua require('ocaml')
 
 " general
 set nocompatible
@@ -87,7 +69,6 @@ inoremap ^ <esc>
 inoremap   <Space>
 
 let mapleader = ","
-map <Leader> <Plug>(easymotion-prefix)
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
@@ -96,16 +77,14 @@ if has("autocmd")
 endif
 
 " theme
-" set background=dark
-colorscheme gruvbox8
+set background=dark
+colorscheme gruvbox
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 
 " netrw
 let g:netrw_banner = 0
 augroup ProjectDrawer
   autocmd!
-  "map <C-f> :NERDTreeToggle<CR>
-  "nmap <C-e> :CocCommand explorer<CR>
   nmap <C-e> :Ex <CR>
 augroup END
 
