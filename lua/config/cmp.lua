@@ -1,6 +1,5 @@
 -- Set up nvim-cmp.
 local cmp = require'cmp'
-local luasnip = require'luasnip'
 
 vim.opt_global.completeopt = { "menuone", "noinsert", "noselect" }
 

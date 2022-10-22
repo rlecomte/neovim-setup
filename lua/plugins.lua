@@ -24,15 +24,21 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'L3MON4D3/LuaSnip',
+    after = 'nvim-cmp',
+    config = function() require('config.snippets') end,
+  }
+
+  use {
        "hrsh7th/nvim-cmp",
+       config = function() require('config.cmp') end,
        requires = {
            "hrsh7th/cmp-buffer",
            "hrsh7th/cmp-nvim-lsp",
-           'L3MON4D3/LuaSnip',
            'rafamadriz/friendly-snippets',
-           'saadparwaiz1/cmp_luasnip',
            'hrsh7th/cmp-path',
            'dcampos/cmp-snippy',
+           'saadparwaiz1/cmp_luasnip'
        }
   }
 

@@ -1,0 +1,34 @@
+{
+  "ziotest2": {
+    "prefix": "ziotest2",
+    "body": [
+      "import zio.*",
+      "import zio.test.*",
+      "import zio.test.Assertion.*",
+      "",
+      "object ${1:ClassName} extends ZIOSpecDefault:",
+      "\t def spec: Spec[TestEnvironment, Any] = suite(\"${1:ClassName}\")(",
+      "\t\ttest(\"hello spec\") {",
+      "\t\t\tassertTrue(true == true)",
+      "\t\t}",
+      "\t)"
+    ],
+    "description": "ZIO test Spec v2"
+  },
+  "zioservice2": {
+    "prefix": "zioservice2",
+    "body": [
+      "import zio.*",
+      "",
+      "trait ${1:ServiceName}:",
+      "\t def foo(): Task[Unit]",
+      "",
+      "object ${1:ServiceName}:",
+      "\t def live: ZLayer[Any, Nothing, ${1:ServiceName}] = ZLayer.succeed(new ${1:ServiceName}Live())",
+      "",
+      "class ${1:ServiceName}Live() extends ${1:ServiceName}:",
+      "\t def foo(): Task[Unit] = ???"
+    ],
+    "description": "ZIO Service v2"
+  }
+}

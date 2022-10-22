@@ -1,9 +1,7 @@
 lua require('plugins')
-lua require('cmp-config')
 lua require('lua-line')
 lua require('scala')
 lua require('ocaml')
-lua require('snip-config')
 lua require('telescope-config')
 
 " general

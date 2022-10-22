@@ -4,15 +4,9 @@
 		"snippets": [
 			{
 				"language": [
-					"all"
+					"scala"
 				],
-				"path": "./all.json"
-			},
-			{
-				"language": [
-					"lua"
-				],
-				"path": "./lua.json"
+				"path": "./zio.json"
 			}
 		]
 	}
