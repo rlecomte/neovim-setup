@@ -2,7 +2,6 @@ lua require('plugins')
 lua require('lua-line')
 lua require('scala')
 lua require('ocaml')
-lua require('telescope-config')
 
 " general
 set nocompatible
@@ -64,7 +63,6 @@ set t_Co=256
 set tags=tags;
 
 " remap escape edit mode
-"inoremap <esc> <nop>
 inoremap ^ <esc>
 inoremap   <Space>
 

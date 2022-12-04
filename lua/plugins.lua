@@ -18,16 +18,34 @@ return require('packer').startup(function(use)
 
   use 'neovim/nvim-lspconfig'
 
+  use 'airblade/vim-gitgutter'
+
   use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
 
   use {
-    'L3MON4D3/LuaSnip',
-    after = 'nvim-cmp',
-    config = function() require('config.snippets') end,
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    config = function()
+      require'nvim-treesitter.configs'.setup {
+        highlight = {
+          enable = true,
+          -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+          -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+          -- Using this option may slow down your editor, and you may see some duplicate highlights.
+          -- Instead of true it can also be a list of languages
+          additional_vim_regex_highlighting = false,
+        },
+      }
+    end
   }
+
+  use { 'junegunn/fzf', run = ":call fzf#install()" }
+  use 'junegunn/fzf.vim'
+
+  use {'kevinhwang91/nvim-bqf', ft = 'qf'}
 
   use {
        "hrsh7th/nvim-cmp",
@@ -43,6 +61,13 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'L3MON4D3/LuaSnip',
+    after = 'nvim-cmp',
+    tag = "v<CurrentMajor>.*",
+    config = function() require('config.snippets') end,
+  }
+
+  use {
     "scalameta/nvim-metals",
     requires = {
       "nvim-lua/plenary.nvim",
@@ -51,9 +76,37 @@ return require('packer').startup(function(use)
   }
 
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.0',
-    requires = { 'nvim-lua/plenary.nvim' }
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require'hop'.setup {
+        vim.keymap.set('n', '<C-c>', require('hop').hint_words, {})
+      }
+    end
   }
+
+  --use { "nvim-telescope/telescope-file-browser.nvim" }
+
+  --use {
+  --  'nvim-telescope/telescope.nvim', tag = '0.1.0',
+  --  requires = { 'nvim-lua/plenary.nvim' },
+  --  config = function()
+  --    require('telescope').setup{
+  --       defaults = {
+  --          path_display={"smart"}
+  --       },
+  --      },
+  --  end
+  --}
+
+  --use {
+  --  'nvim-telescope/telescope-fzf-native.nvim',
+  --  run = 'make',
+  --  config = function()
+  --    require('telescope').load_extension('fzf')
+  --  end
+  --}
 
   --use {
   --  "folke/trouble.nvim",
