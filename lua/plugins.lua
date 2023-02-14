@@ -1,18 +1,30 @@
--- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
+local vim = vim
+local execute = vim.api.nvim_command
 
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+local fn = vim.fn
+
+-- ensure that packer is installed
+local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
+
+if fn.empty(fn.glob(install_path)) > 0 then
+    execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
+    execute 'packadd packer.nvim'
+end
+
+local packer = require('packer')
+local util = require('packer.util')
+packer.init({
+  package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
+})
 
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
-return require('packer').startup(function(use)
+return packer.startup(function(use)
 
-  -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
+  use {
+    'L3MON4D3/LuaSnip',
+    after = 'nvim-cmp',
+    config = function() require('config.snippets') end,
+  }
 
   use 'ellisonleao/gruvbox.nvim'
 
@@ -61,13 +73,6 @@ return require('packer').startup(function(use)
   }
 
   use {
-    'L3MON4D3/LuaSnip',
-    after = 'nvim-cmp',
-    tag = "v<CurrentMajor>.*",
-    config = function() require('config.snippets') end,
-  }
-
-  use {
     "scalameta/nvim-metals",
     requires = {
       "nvim-lua/plenary.nvim",
@@ -86,37 +91,5 @@ return require('packer').startup(function(use)
     end
   }
 
-  --use { "nvim-telescope/telescope-file-browser.nvim" }
-
-  --use {
-  --  'nvim-telescope/telescope.nvim', tag = '0.1.0',
-  --  requires = { 'nvim-lua/plenary.nvim' },
-  --  config = function()
-  --    require('telescope').setup{
-  --       defaults = {
-  --          path_display={"smart"}
-  --       },
-  --      },
-  --  end
-  --}
-
-  --use {
-  --  'nvim-telescope/telescope-fzf-native.nvim',
-  --  run = 'make',
-  --  config = function()
-  --    require('telescope').load_extension('fzf')
-  --  end
-  --}
-
-  --use {
-  --  "folke/trouble.nvim",
-  --  requires = "kyazdani42/nvim-web-devicons",
-  --  config = function()
-  --    require("trouble").setup {
-  --      -- your configuration comes here
-  --      -- or leave it empty to use the default settings
-  --      -- refer to the configuration section below
-  --    }
-  --  end
-  --}
+  use 'onsails/lspkind.nvim'
 end)

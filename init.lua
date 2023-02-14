@@ -1,8 +1,13 @@
-lua require('plugins')
-lua require('lua-line')
-lua require('scala')
-lua require('ocaml')
+require('packer').startup(function(use) use 'wbthomason/packer.nvim' end)
 
+require('plugins')
+require('config/cmp')
+require('config/lspconfig')
+require('config/lualine')
+require('config/lspkind')
+--lua require('scala')
+
+vim.cmd([[
 " general
 set nocompatible
 set backspace=indent,eol,start
@@ -93,8 +98,4 @@ autocmd FileType yaml setlocal ts=2 sw=2
 autocmd FileType sql setlocal ts=2 sw=2
 
 autocmd BufWritePre * %s/\s\+$//e
-
-let g:opamshare = substitute(system('opam var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-
-set rtp^="/home/rlecomte/.opam/default/share/ocp-indent/vim"
+]])
