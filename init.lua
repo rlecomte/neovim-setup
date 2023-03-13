@@ -5,7 +5,8 @@ require('config/cmp')
 require('config/lspconfig')
 require('config/lualine')
 require('config/lspkind')
---lua require('scala')
+require('config/hop')
+require('scala')
 
 vim.cmd([[
 " general
