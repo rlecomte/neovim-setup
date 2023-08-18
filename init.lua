@@ -7,7 +7,6 @@ require('config/lualine')
 require('config/lspkind')
 require('config/hop')
 require('config/oil')
-require('scala')
 
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 vim.cmd([[
