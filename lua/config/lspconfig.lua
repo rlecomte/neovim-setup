@@ -110,6 +110,7 @@ metals_config.settings = {
     "com.github.swagger.akka.javadsl",
     "sttp.tapir.EndpointIO.annotations"
   },
+  serverVersion = "1.0.0"
 }
 
 metals_config.on_attach = on_attach

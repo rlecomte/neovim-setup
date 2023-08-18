@@ -6,8 +6,10 @@ require('config/lspconfig')
 require('config/lualine')
 require('config/lspkind')
 require('config/hop')
+require('config/oil')
 require('scala')
 
+vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 vim.cmd([[
 " general
 set nocompatible
@@ -89,7 +91,7 @@ highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE gui
 let g:netrw_banner = 0
 augroup ProjectDrawer
   autocmd!
-  nmap <C-e> :Ex <CR>
+  nmap <C-e> :Oil <CR>
 augroup END
 
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
