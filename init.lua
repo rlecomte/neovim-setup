@@ -1,12 +1,9 @@
-require('packer').startup(function(use) use 'wbthomason/packer.nvim' end)
-
 require('plugins')
 require('config/cmp')
 require('config/lspconfig')
 require('config/lualine')
 require('config/lspkind')
 require('config/hop')
-require('config/oil')
 
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 vim.cmd([[

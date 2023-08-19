@@ -1,25 +1,18 @@
-local vim = vim
-local execute = vim.api.nvim_command
-
-local fn = vim.fn
-
--- ensure that packer is installed
-local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-    execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
-    execute 'packadd packer.nvim'
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 
-local packer = require('packer')
-local util = require('packer.util')
-packer.init({
-  package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
-})
+local packer_bootstrap = ensure_packer()
 
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
-return packer.startup(function(use)
-  use {'wbthomason/packer.nvim'}
+return require("packer").startup(function(use)
+  use 'wbthomason/packer.nvim'
 
   use 'neovim/nvim-lspconfig'
 
@@ -37,6 +30,7 @@ return packer.startup(function(use)
   use 'airblade/vim-gitgutter'
 
   use 'nvim-lua/popup.nvim'
+
   use 'nvim-lua/plenary.nvim'
 
   use {
@@ -95,7 +89,16 @@ return packer.startup(function(use)
        }
   }
 
-  use 'L3MON4D3/LuaSnip'
+  use { 'L3MON4D3/LuaSnip' }
 
-  use 'stevearc/oil'
+  use {
+    'stevearc/oil.nvim',
+    config = function() require('oil').setup() end
+  }
+
+  use 'sindrets/diffview.nvim'
+
+  if packer_bootstrap then
+    require("packer").sync()
+  end
 end)
