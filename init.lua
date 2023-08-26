@@ -5,7 +5,6 @@ require('config/lualine')
 require('config/lspkind')
 require('config/hop')
 
-vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 vim.cmd([[
 " general
 set nocompatible

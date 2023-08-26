@@ -93,7 +93,17 @@ return require("packer").startup(function(use)
 
   use {
     'stevearc/oil.nvim',
-    config = function() require('oil').setup() end
+    config = function()
+      require('oil').setup({
+        keymaps = {
+          ["<C-t>"] = false,
+        },
+        view_options = {
+          -- Show files and directories that start with "."
+          show_hidden = true
+        }
+      })
+    end
   }
 
   use 'sindrets/diffview.nvim'
