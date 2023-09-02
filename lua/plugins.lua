@@ -14,9 +14,30 @@ local packer_bootstrap = ensure_packer()
 return require("packer").startup(function(use)
   use 'wbthomason/packer.nvim'
 
+  use {
+    "williamboman/mason.nvim",
+    config = function ()
+      require'mason'.setup {
+        opts = {
+          ensure_installed = {
+            "rust-analyzer"
+          }
+        }
+      }
+    end
+  }
+
   use 'neovim/nvim-lspconfig'
 
   use 'jose-elias-alvarez/typescript.nvim'
+
+  use {
+    'folke/trouble.nvim',
+    requires = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require'trouble'.setup {}
+    end
+  }
 
   use({
     "jose-elias-alvarez/null-ls.nvim",

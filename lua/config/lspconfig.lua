@@ -45,35 +45,8 @@ local on_attach = function(client, bufnr)
 end
 
 local lspconfig = require('lspconfig')
+local util = require('lspconfig/util')
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-require 'lspconfig'.cssmodules_ls.setup {
-  capabilities = capabilities
-}
-
-require 'lspconfig'.eslint.setup({
-  settings = {
-    packageManager = 'yarn'
-  },
-  on_attach = function(client, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
-    })
-  end,
-  capabilities = capabilities,
-})
-
-require 'lspconfig'.html.setup {
-  capabilities = capabilities,
-}
-
---lspconfig.tsserver.setup{
---    on_attach = on_attach,
---    filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
---    cmd = { "typescript-language-server", "--stdio" },
---    capabilities = capabilities,
---}
 
 require("typescript").setup({
   go_to_source_definition = {
@@ -96,8 +69,15 @@ null_ls.setup({
   },
 })
 
+-- Rust
+
+require 'lspconfig'.rust_analyzer.setup({
+  on_attach = on_attach,
+  capabilities = capabilities
+})
+
 ----------------------------------
--- Scala LSP Setup ---------------------
+-- Scala LSP Setup ---------------
 ----------------------------------
 local metals_config = require("metals").bare_config()
 metals_config.init_options.statusBarProvider = "on"
