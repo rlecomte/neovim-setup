@@ -57,6 +57,7 @@ require("lazy").setup({
            "hrsh7th/cmp-vsnip"
        }
   },
+  { "L3MON4D3/LuaSnip", tag = "v2.*" },
 
   "sindrets/diffview.nvim",
   "airblade/vim-gitgutter",
