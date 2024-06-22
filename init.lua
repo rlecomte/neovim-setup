@@ -9,8 +9,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     lazypath,
   })
 end
-vim.opt.rtp:prepend(lazypath)require('plugins')
-
+vim.opt.rtp:prepend(lazypath)
+require('config/plugins')
 require('config/cmp')
 require('config/lspconfig')
 require('config/lualine')
