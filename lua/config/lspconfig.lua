@@ -46,35 +46,16 @@ end
 
 local lspconfig = require('lspconfig')
 local util = require('lspconfig/util')
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-require("typescript").setup({
-  go_to_source_definition = {
-        fallback = true, -- fall back to standard LSP definition on failure
-  },
-  server = {
-    on_attach = on_attach,
-    filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-    cmd = { "typescript-language-server", "--stdio" },
-    capabilities = capabilities
-  }
-})
-
-local null_ls = require("null-ls")
-null_ls.setup({
-  sources = {
-    require("typescript.extensions.null-ls.code-actions"),
-    null_ls.builtins.code_actions.eslint,
-    null_ls.builtins.code_actions.eslint_d
-  },
-})
-
--- Rust
-
-require 'lspconfig'.rust_analyzer.setup({
-  on_attach = on_attach,
-  capabilities = capabilities
-})
+local c = vim.lsp.protocol.make_client_capabilities()
+c.textDocument.completion.completionItem.snippetSupport = true
+c.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+        'documentation',
+        'detail',
+        'additionalTextEdits',
+    },
+}
+local capabilities = require("cmp_nvim_lsp").default_capabilities(c)
 
 ----------------------------------
 -- Scala LSP Setup ---------------
@@ -90,7 +71,8 @@ metals_config.settings = {
     "com.github.swagger.akka.javadsl",
     "sttp.tapir.EndpointIO.annotations"
   },
-  serverVersion = "1.1.0"
+  serverVersion = "1.3.2",
+  serverProperties = { "-Xmx8G"}
 }
 
 metals_config.on_attach = on_attach

@@ -1,9 +1,22 @@
-require('plugins')
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)require('plugins')
+
 require('config/cmp')
 require('config/lspconfig')
 require('config/lualine')
 require('config/lspkind')
 require('config/hop')
+require('config/telescope')
 
 vim.cmd([[
 " general
@@ -96,4 +109,7 @@ autocmd FileType yaml setlocal ts=2 sw=2
 autocmd FileType sql setlocal ts=2 sw=2
 
 autocmd BufWritePre * %s/\s\+$//e
+
+nnoremap <F12>f :exe ':silent !firefox %'<CR>
 ]])
+

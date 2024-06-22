@@ -1,83 +1,26 @@
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
-end
+require("lazy").setup({
+  "nvim-lua/plenary.nvim",
 
-local packer_bootstrap = ensure_packer()
+  "neovim/nvim-lspconfig",
+  "onsails/lspkind.nvim",
+  "nvimtools/none-ls.nvim",
 
-return require("packer").startup(function(use)
-  use 'wbthomason/packer.nvim'
-
-  use {
-    "williamboman/mason.nvim",
-    config = function ()
-      require'mason'.setup {
-        opts = {
-          ensure_installed = {
-            "rust-analyzer"
-          }
-        }
-      }
-    end
-  }
-
-  use 'neovim/nvim-lspconfig'
-
-  use 'jose-elias-alvarez/typescript.nvim'
-
-  use {
-    'folke/trouble.nvim',
-    requires = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require'trouble'.setup {}
-    end
-  }
-
-  use({
-    "jose-elias-alvarez/null-ls.nvim",
-     requires = { "nvim-lua/plenary.nvim" },
-  })
-
-  use 'onsails/lspkind.nvim'
-
-  use 'ellisonleao/gruvbox.nvim'
-
-  use 'airblade/vim-gitgutter'
-
-  use 'nvim-lua/popup.nvim'
-
-  use 'nvim-lua/plenary.nvim'
-
-  use {
-    'phaazon/hop.nvim',
-    branch = 'v2', -- optional but strongly recommended
+  "ellisonleao/gruvbox.nvim",
+  "kyazdani42/nvim-web-devicons",
+  "nvim-lualine/lualine.nvim",
+  { "nvim-telescope/telescope.nvim", tag = "0.1.8" },
+  { "phaazon/hop.nvim",
+    branch = "v2",
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
       require'hop'.setup {}
     end
-  }
-
-  use { 'junegunn/fzf', run = ":call fzf#install()" }
-  use 'junegunn/fzf.vim'
-
-  use {'kevinhwang91/nvim-bqf', ft = 'qf'}
-
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-  }
-
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     config = function()
-      require'nvim-treesitter.configs'.setup {
+      require"nvim-treesitter.configs".setup {
         highlight = {
           enable = true,
           -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
@@ -88,32 +31,9 @@ return require("packer").startup(function(use)
         },
       }
     end
-  }
-
-  use {
-    "scalameta/nvim-metals",
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "mfussenegger/nvim-dap",
-    },
-  }
-
-  use {
-       "hrsh7th/nvim-cmp",
-       config = function() require('config.cmp') end,
-       requires = {
-           "hrsh7th/cmp-buffer",
-           "hrsh7th/cmp-nvim-lsp",
-           'hrsh7th/cmp-path',
-           'hrsh7th/cmp-cmdline',
-           'hrsh7th/cmp-vsnip'
-       }
-  }
-
-  use { 'L3MON4D3/LuaSnip' }
-
-  use {
-    'stevearc/oil.nvim',
+  },
+  {
+    "stevearc/oil.nvim",
     config = function()
       require('oil').setup({
         keymaps = {
@@ -125,11 +45,28 @@ return require("packer").startup(function(use)
         }
       })
     end
-  }
+  },
+  {
+       "hrsh7th/nvim-cmp",
+       config = function() require("config.cmp") end,
+       dependencies = {
+           "hrsh7th/cmp-buffer",
+           "hrsh7th/cmp-nvim-lsp",
+           "hrsh7th/cmp-path",
+           "hrsh7th/cmp-cmdline",
+           "hrsh7th/cmp-vsnip"
+       }
+  },
 
-  use 'sindrets/diffview.nvim'
+  "sindrets/diffview.nvim",
+  "airblade/vim-gitgutter",
+  {
+    "NeogitOrg/neogit",
+    config = function()
+      require("neogit").setup({})
+    end
+  },
+  "f-person/git-blame.nvim",
 
-  if packer_bootstrap then
-    require("packer").sync()
-  end
-end)
+  "scalameta/nvim-metals"
+})
