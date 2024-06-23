@@ -1,3 +1,8 @@
+require("mason").setup()
+require("mason-lspconfig").setup {
+    ensure_installed = { "lua_ls", "rust_analyzer", "gopls" }
+}
+
 local api = vim.api
 
 -- Mappings.
@@ -42,6 +47,10 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+  vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 end
 
 local lspconfig = require('lspconfig')
@@ -56,6 +65,12 @@ c.textDocument.completion.completionItem.resolveSupport = {
     },
 }
 local capabilities = require("cmp_nvim_lsp").default_capabilities(c)
+
+-- Lua LSP Setup
+require'lspconfig'.lua_ls.setup{}
+
+-- Go LSP Setup
+require'lspconfig'.gopls.setup{}
 
 ----------------------------------
 -- Scala LSP Setup ---------------

@@ -16,6 +16,7 @@ require('config/lualine')
 require('config/lspkind')
 require('config/hop')
 require('config/telescope')
+require('config/nonels')
 
 vim.cmd([[
 " general
