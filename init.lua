@@ -79,7 +79,7 @@ set t_Co=256
 set tags=tags;
 
 " remap escape edit mode
-inoremap ^ <esc>
+inoremap jj <esc>
 inoremap   <Space>
 
 let mapleader = ","

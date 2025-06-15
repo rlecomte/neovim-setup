@@ -87,34 +87,41 @@ require'lspconfig'.gopls.setup{}
 ----------------------------------
 -- Scala LSP Setup ---------------
 ----------------------------------
-local metals_config = require("metals").bare_config()
-metals_config.init_options.statusBarProvider = "on"
-
--- Example of settings
-metals_config.settings = {
-  showImplicitArguments = true,
-  excludedPackages = {
-    "akka.actor.typed.javadsl",
-    "com.github.swagger.akka.javadsl",
-    "sttp.tapir.EndpointIO.annotations"
-  },
-  serverVersion = "1.3.2",
-  serverProperties = { "-Xmx8G"}
-}
-
-metals_config.on_attach = on_attach
-
--- Autocmd that will actually be in charging of starting the whole thing
-local nvim_metals_group = api.nvim_create_augroup("nvim-metals", { clear = true })
-api.nvim_create_autocmd("FileType", {
-  -- NOTE: You may or may not want java included here. You will need it if you
-  -- want basic Java support but it may also conflict if you are using
-  -- something like nvim-jdtls which also works on a java filetype autocmd.
-  pattern = { "scala", "sbt", "java" },
-  callback = function()
-    require("metals").initialize_or_attach(metals_config)
-  end,
-  group = nvim_metals_group,
-})
-
-metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+--local metals_config = require("metals").bare_config()
+--metals_config.init_options.statusBarProvider = "on"
+--
+---- Example of settings
+--metals_config.settings = {
+--  excludedPackages = {
+--    "akka.actor.typed.javadsl",
+--    "com.github.swagger.akka.javadsl",
+--    "sttp.tapir.EndpointIO.annotations",
+--    "*.java"
+--  },
+--  bloopVersion = "2.0.2",
+--  serverVersion = "1.3.5+104-362fce59-SNAPSHOT",
+--  autoImportBuild = "all",
+--  verboseCompilation = true,
+--  serverProperties = {
+--    "-Xmx16G",
+--    "-Dmetals.enable-best-effort=false"
+--  }
+--}
+----"-Dmetals.enable-best-effort=true"
+--
+--metals_config.on_attach = on_attach
+--
+---- Autocmd that will actually be in charging of starting the whole thing
+--local nvim_metals_group = api.nvim_create_augroup("nvim-metals", { clear = true })
+--api.nvim_create_autocmd("FileType", {
+--  -- NOTE: You may or may not want java included here. You will need it if you
+--  -- want basic Java support but it may also conflict if you are using
+--  -- something like nvim-jdtls which also works on a java filetype autocmd.
+--  pattern = { "scala", "sbt", "java", "sc" },
+--  callback = function()
+--    require("metals").initialize_or_attach(metals_config)
+--  end,
+--  group = nvim_metals_group,
+--})
+--
+--metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
