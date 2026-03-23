@@ -1,72 +1,10 @@
-require("mason").setup()
-require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "rust_analyzer", "gopls" }
-}
-
-local api = vim.api
-
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>")
 
-local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true }
-  if opts then
-    options = vim.tbl_extend("force", options, opts)
-  end
-  api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  vim.opt_global.completeopt = { "menuone", "noinsert", "noselect" }
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover)
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references)
-  vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol)
-  vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol)
-  vim.keymap.set("n", "<space>cl", vim.lsp.codelens.run)
-  vim.keymap.set("n", "<space>sh", vim.lsp.buf.signature_help)
-  vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename)
-  vim.keymap.set("n", "<space>f", vim.lsp.buf.format)
-  vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action)
-
-  --vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  --vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  --vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  --vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  --vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  --vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  --vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  --vim.keymap.set('n', '<space>wl', function()
-  --  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  --end, bufopts)
-  --vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-  --vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  --vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  --vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  --vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-  --vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-  --vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-  --vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-  --vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-end
-
-local lspconfig = require('lspconfig')
-local util = require('lspconfig/util')
 local c = vim.lsp.protocol.make_client_capabilities()
 c.textDocument.completion.completionItem.snippetSupport = true
 c.textDocument.completion.completionItem.resolveSupport = {
@@ -76,52 +14,94 @@ c.textDocument.completion.completionItem.resolveSupport = {
         'additionalTextEdits',
     },
 }
-local capabilities = require("cmp_nvim_lsp").default_capabilities(c)
+require("cmp_nvim_lsp").default_capabilities(c)
+
+vim.lsp.config('lua_ls', {
+  on_init = function(client)
+    if client.workspace_folders then
+      local path = client.workspace_folders[1].name
+      if
+        path ~= vim.fn.stdpath('config')
+        and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+      then
+        return
+      end
+    end
+
+    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most
+        -- likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+        -- Tell the language server how to find Lua modules same way as Neovim
+        -- (see `:h lua-module-load`)
+        path = {
+          'lua/?.lua',
+          'lua/?/init.lua',
+        },
+      },
+      -- Make the server aware of Neovim runtime files
+      workspace = {
+        checkThirdParty = false,
+        library = {
+          vim.env.VIMRUNTIME
+          -- Depending on the usage, you might want to add additional paths
+          -- here.
+          -- '${3rd}/luv/library'
+          -- '${3rd}/busted/library'
+        }
+        -- Or pull in all of 'runtimepath'.
+        -- NOTE: this is a lot slower and will cause issues when working on
+        -- your own configuration.
+        -- See https://github.com/neovim/nvim-lspconfig/issues/3189
+        -- library = {
+        --   vim.api.nvim_get_runtime_file('', true),
+        -- }
+      }
+    })
+  end,
+  settings = {
+    Lua = {}
+  }
+})
+
+vim.lsp.config('rust_analyzer', {
+  on_attach = function(client, bufnr)
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  end,
+  settings = {
+    ['rust-analyzer'] = {
+      diagnostics = {
+        enable = false;
+      },
+      imports = {
+        granularity = {
+                group = "module",
+            },
+            prefix = "self",
+      },
+      cargo = {
+          buildScripts = {
+              enable = true,
+          },
+      },
+      procMacro = {
+          enable = true
+      },
+    }
+  }
+})
+
+require("mason").setup()
+require("mason-lspconfig").setup {
+    ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright" }
+}
 
 -- Lua LSP Setup
-require'lspconfig'.lua_ls.setup{}
+--vim.lsp.enable('lua_ls')
 
 -- Go LSP Setup
-require'lspconfig'.gopls.setup{}
+-- vim.lsp.enable('gopls')
 
-----------------------------------
--- Scala LSP Setup ---------------
-----------------------------------
---local metals_config = require("metals").bare_config()
---metals_config.init_options.statusBarProvider = "on"
---
----- Example of settings
---metals_config.settings = {
---  excludedPackages = {
---    "akka.actor.typed.javadsl",
---    "com.github.swagger.akka.javadsl",
---    "sttp.tapir.EndpointIO.annotations",
---    "*.java"
---  },
---  bloopVersion = "2.0.2",
---  serverVersion = "1.3.5+104-362fce59-SNAPSHOT",
---  autoImportBuild = "all",
---  verboseCompilation = true,
---  serverProperties = {
---    "-Xmx16G",
---    "-Dmetals.enable-best-effort=false"
---  }
---}
-----"-Dmetals.enable-best-effort=true"
---
---metals_config.on_attach = on_attach
---
----- Autocmd that will actually be in charging of starting the whole thing
---local nvim_metals_group = api.nvim_create_augroup("nvim-metals", { clear = true })
---api.nvim_create_autocmd("FileType", {
---  -- NOTE: You may or may not want java included here. You will need it if you
---  -- want basic Java support but it may also conflict if you are using
---  -- something like nvim-jdtls which also works on a java filetype autocmd.
---  pattern = { "scala", "sbt", "java", "sc" },
---  callback = function()
---    require("metals").initialize_or_attach(metals_config)
---  end,
---  group = nvim_metals_group,
---})
---
---metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- Python LSP Setup
+-- vim.lsp.enable('pyright')

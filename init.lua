@@ -1,3 +1,6 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -30,6 +33,8 @@ set hidden
 set autoread
 set hidden
 set updatetime=400
+set modifiable
+
 
 " interface
 set laststatus=2
@@ -81,8 +86,6 @@ set tags=tags;
 " remap escape edit mode
 inoremap jj <esc>
 inoremap   <Space>
-
-let mapleader = ","
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file

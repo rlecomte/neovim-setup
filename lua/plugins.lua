@@ -24,6 +24,7 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    lazy = false,
     config = function()
       require"nvim-treesitter.configs".setup {
         highlight = {
@@ -34,6 +35,9 @@ require("lazy").setup({
           -- Instead of true it can also be a list of languages
           additional_vim_regex_highlighting = false,
         },
+        opts = {
+          ensure_installed = { "lua", "python", "go", "scala", "java", "bash", "json", "yaml", "markdown" },
+        }
       }
     end
   },
@@ -116,13 +120,14 @@ require("lazy").setup({
 
         -- Example of settings
         metals_config.settings = {
+          --sbtScript = "sbt",
           showImplicitArguments = true,
-          excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
-          serverVersion = "1.5.1",
-          defaultBspToBuildTool = "false",
+          --excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+          serverVersion = "1.6.6",
+          --defaultBspToBuildTool = "true",
           autoImportBuild = "all",
           verboseCompilation = "true",
-          fallbackScalaVersion = "3.6.4",
+          --fallbackScalaVersion = "3.6.4",
         }
 
         -- *READ THIS*
@@ -248,5 +253,41 @@ require("lazy").setup({
           suggestion = { auto_trigger = true }
         })
       end,
-    }
+    },
+
+    {
+      'tanvirtin/vgit.nvim',
+      dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
+      -- Lazy loading on 'VimEnter' event is necessary.
+      event = 'VimEnter',
+      config = function() require("vgit").setup() end,
+    },
+
+    {
+      "coder/claudecode.nvim",
+      lazy = false,
+      dependencies = { "folke/snacks.nvim" },
+      config = true,
+      keys = {
+        -- Your keymaps here
+        { "<leader>a", nil, desc = "AI/Claude Code" },
+        { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+        { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+        { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+        { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" }
+        { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+        { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+        { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+        {
+          "<leader>as",
+          "<cmd>ClaudeCodeTreeAdd<cr>",
+          desc = "Add file",
+          ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
+        },
+
+        -- Diff management
+        { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+        { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+      },
+  },
 })
