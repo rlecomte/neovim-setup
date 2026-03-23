@@ -1,5 +1,4 @@
 local map = vim.keymap.set
-local fn = vim.fn
 
 require("lazy").setup({
   "nvim-lua/plenary.nvim",
@@ -8,37 +7,50 @@ require("lazy").setup({
 
   "neovim/nvim-lspconfig",
   "onsails/lspkind.nvim",
-  "nvimtools/none-ls.nvim",
 
   "ellisonleao/gruvbox.nvim",
   "kyazdani42/nvim-web-devicons",
   "nvim-lualine/lualine.nvim",
-  { "nvim-telescope/telescope.nvim", tag = "0.1.8" },
-  { "phaazon/hop.nvim",
-    branch = "v2",
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = {
+      { "<C-t>", function() require("telescope.builtin").git_files() end, desc = "Git files" },
+      { "<C-n>", function() require("telescope.builtin").oldfiles() end, desc = "Recent files" },
+      { "<C-d>", function() require("telescope.builtin").live_grep() end, desc = "Live grep" },
+    },
     config = function()
-      -- you can configure Hop the way you like here; see :h hop-config
-      require'hop'.setup {}
-    end
+      require("telescope").setup({
+        defaults = { path_display = { "smart" } },
+        pickers = {
+          find_files = { theme = "dropdown" },
+          oldfiles = { theme = "dropdown" },
+          live_grep = { theme = "dropdown" },
+        },
+      })
+    end,
+  },
+  {
+    "phaazon/hop.nvim",
+    branch = "v2",
+    keys = {
+      { "<C-c>", function() require("hop").hint_words() end, desc = "Hop to word" },
+    },
+    config = function()
+      require("hop").setup({})
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     lazy = false,
     config = function()
-      require"nvim-treesitter.configs".setup {
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "lua", "python", "go", "scala", "java", "bash", "json", "yaml", "markdown" },
         highlight = {
           enable = true,
-          -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-          -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-          -- Using this option may slow down your editor, and you may see some duplicate highlights.
-          -- Instead of true it can also be a list of languages
           additional_vim_regex_highlighting = false,
         },
-        opts = {
-          ensure_installed = { "lua", "python", "go", "scala", "java", "bash", "json", "yaml", "markdown" },
-        }
-      }
+      })
     end
   },
   { 'echasnovski/mini.nvim', version = '*' },
@@ -68,15 +80,50 @@ require("lazy").setup({
        }
   },
 
-  "sindrets/diffview.nvim",
-  "airblade/vim-gitgutter",
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+  },
   {
     "NeogitOrg/neogit",
+    cmd = "Neogit",
     config = function()
-      require("neogit").setup({})
-    end
+      require("neogit").setup({
+        kind = "split",
+        mappings = {
+          status = {
+            ["t"] = "MoveDown",   -- BÉPO: t = j (down)
+            ["s"] = "MoveUp",     -- BÉPO: s = k (up)
+            ["j"] = "Stage",
+            ["k"] = false,
+          },
+        },
+      })
+    end,
   },
-  "f-person/git-blame.nvim",
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "BufReadPost",
+    config = function()
+      require("gitsigns").setup({
+        current_line_blame = true,
+        on_attach = function(bufnr)
+          local gs = require("gitsigns")
+          local function bmap(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+          bmap('n', ']h', gs.next_hunk)
+          bmap('n', '[h', gs.prev_hunk)
+          bmap('n', '<leader>hs', gs.stage_hunk)
+          bmap('n', '<leader>hr', gs.reset_hunk)
+          bmap('n', '<leader>hp', gs.preview_hunk)
+          bmap('n', '<leader>hb', function() gs.blame_line({ full = true }) end)
+        end,
+      })
+    end,
+  },
 
   {
       "scalameta/nvim-metals",
@@ -239,9 +286,8 @@ require("lazy").setup({
 
     {
         'numToStr/Comment.nvim',
-        opts = {
-            -- add any options here
-        }
+        event = "BufReadPost",
+        opts = {},
     },
 
     {
@@ -255,13 +301,6 @@ require("lazy").setup({
       end,
     },
 
-    {
-      'tanvirtin/vgit.nvim',
-      dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
-      -- Lazy loading on 'VimEnter' event is necessary.
-      event = 'VimEnter',
-      config = function() require("vgit").setup() end,
-    },
 
     {
       "coder/claudecode.nvim",
@@ -274,7 +313,7 @@ require("lazy").setup({
         { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
         { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
         { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
-        { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" }
+        { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
         { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
         { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
         { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
@@ -289,5 +328,25 @@ require("lazy").setup({
         { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
         { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
       },
+  },
+
+  -- Keymap discoverability
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  -- Auto-close brackets/quotes
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = function()
+      local autopairs = require("nvim-autopairs")
+      autopairs.setup({})
+      -- Integrate with cmp
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    end,
   },
 })

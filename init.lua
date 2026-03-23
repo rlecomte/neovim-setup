@@ -8,111 +8,119 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
-vim.opt.rtp:prepend(lazypath)require('plugins')
-require('config/cmp')
-require('config/lspconfig')
-require('config/lualine')
-require('config/lspkind')
-require('config/hop')
-require('config/telescope')
-require('config/nonels')
+vim.opt.rtp:prepend(lazypath)
 
-vim.cmd([[
-" general
-set nocompatible
-set backspace=indent,eol,start
-set history=1000
-set showcmd
-set showmode
-set autoread
-set hidden
-set autoread
-set hidden
-set updatetime=400
-set modifiable
+require('plugins')
+require('config.cmp')
+require('config.lspconfig')
+require('config.lualine')
+require('config.lspkind')
 
+-- General
+vim.opt.compatible = false
+vim.opt.backspace = { 'indent', 'eol', 'start' }
+vim.opt.history = 1000
+vim.opt.showcmd = true
+vim.opt.showmode = true
+vim.opt.autoread = true
+vim.opt.hidden = true
+vim.opt.updatetime = 400
+vim.opt.modifiable = true
 
-" interface
-set laststatus=2
-set ruler
-set wildmenu
-set cursorline
-set number
-"set relativenumber
-set mouse=a
-set title
+-- Interface
+vim.opt.laststatus = 2
+vim.opt.ruler = true
+vim.opt.wildmenu = true
+vim.opt.cursorline = true
+vim.opt.number = true
+vim.opt.mouse = 'a'
+vim.opt.title = true
 
-" indentation
-filetype plugin indent on
-set autoindent
-set expandtab     "Always uses spaces instead of tabs
-set nowrap
-set tabstop=4     "A tab is 4 spaces
-set softtabstop=2 "Insert 4 spaces when tab is pressed
-set shiftwidth=2  "An indent is 4 spaces
+-- Indentation
+vim.cmd('filetype plugin indent on')
+vim.opt.autoindent = true
+vim.opt.expandtab = true
+vim.opt.wrap = false
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
 
-" search
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
+-- Search
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-" text
-set fileencoding=utf-8
-set linebreak
-set scrolloff=3
-set sidescrolloff=5
-syntax enable
+-- Text
+vim.opt.fileencoding = 'utf-8'
+vim.opt.linebreak = true
+vim.opt.scrolloff = 3
+vim.opt.sidescrolloff = 5
+vim.cmd('syntax enable')
 
-" miscellaneous
-set confirm
-set nomodeline
-set nrformats-=octal
-"set shell
-"set spell
+-- Miscellaneous
+vim.opt.confirm = true
+vim.opt.modeline = false
+vim.opt.nrformats:remove('octal')
 
-"copy to clipboard (+y)
-set clipboard=unnamedplus
-vnoremap <C-c> +y
-set termguicolors
-set t_Co=256
+-- Clipboard
+vim.opt.clipboard = 'unnamedplus'
+vim.keymap.set('v', '<C-c>', '"+y', { noremap = true })
+vim.opt.termguicolors = true
 
-set tags=tags;
+vim.opt.tags = 'tags;'
 
-" remap escape edit mode
-inoremap jj <esc>
-inoremap   <Space>
+-- Remap escape in insert mode
+vim.keymap.set('i', 'jj', '<Esc>', { noremap = true })
 
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
+-- Jump to last position when reopening a file
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local line_count = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 1 and mark[1] <= line_count then
+      vim.api.nvim_win_set_cursor(0, mark)
+    end
+  end,
+})
 
-" theme
-set background=dark
-colorscheme gruvbox
-highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+-- Theme
+vim.opt.background = 'dark'
+vim.cmd('colorscheme gruvbox')
+vim.api.nvim_set_hl(0, 'LineNr', { fg = 'DarkGrey', bold = false })
 
-" netrw
-let g:netrw_banner = 0
-augroup ProjectDrawer
-  autocmd!
-  nmap <C-e> :Oil <CR>
-augroup END
+-- Netrw
+vim.g.netrw_banner = 0
+vim.keymap.set('n', '<C-e>', ':Oil<CR>', { noremap = true })
 
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-autocmd FileType javascript setlocal ts=2 sw=2
-autocmd FileType json setlocal ts=2 sw=2
-autocmd FileType yaml setlocal ts=2 sw=2
-autocmd FileType sql setlocal ts=2 sw=2
+-- Highlight extra whitespace
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = function()
+    vim.api.nvim_set_hl(0, 'ExtraWhitespace', { bg = 'red' })
+  end,
+})
 
-autocmd BufWritePre * %s/\s\+$//e
+-- Filetype-specific indentation
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'javascript', 'json', 'yaml', 'sql' },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+  end,
+})
 
-nnoremap <F12>f :exe ':silent !firefox %'<CR>
-]])
+-- Trim trailing whitespace on save
+vim.api.nvim_create_autocmd('BufWritePre', {
+  callback = function()
+    local save = vim.fn.winsaveview()
+    vim.cmd([[%s/\s\+$//e]])
+    vim.fn.winrestview(save)
+  end,
+})
 
+-- Open in Firefox
+vim.keymap.set('n', '<F12>f', ':silent !firefox %<CR>', { noremap = true })

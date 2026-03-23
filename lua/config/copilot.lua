@@ -1,1 +1,0 @@
-local copilot = require('copilot')

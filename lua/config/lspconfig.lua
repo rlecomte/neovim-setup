@@ -1,22 +1,31 @@
-local opts = { noremap=true, silent=true }
+-- Global diagnostic keymaps (work everywhere)
+local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>")
 
-local c = vim.lsp.protocol.make_client_capabilities()
-c.textDocument.completion.completionItem.snippetSupport = true
-c.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-        'documentation',
-        'detail',
-        'additionalTextEdits',
-    },
-}
-require("cmp_nvim_lsp").default_capabilities(c)
+-- Shared on_attach: LSP keymaps only active in buffers with a language server
+local on_attach = function(client, bufnr)
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', bufopts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<space>f', vim.lsp.buf.format, bufopts)
+  vim.keymap.set('n', '<space>sh', vim.lsp.buf.signature_help, bufopts)
+end
 
+-- Capabilities for completion
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+-- Lua LSP
 vim.lsp.config('lua_ls', {
+  capabilities = capabilities,
+  on_attach = on_attach,
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
@@ -30,78 +39,58 @@ vim.lsp.config('lua_ls', {
 
     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
       runtime = {
-        -- Tell the language server which version of Lua you're using (most
-        -- likely LuaJIT in the case of Neovim)
         version = 'LuaJIT',
-        -- Tell the language server how to find Lua modules same way as Neovim
-        -- (see `:h lua-module-load`)
-        path = {
-          'lua/?.lua',
-          'lua/?/init.lua',
-        },
+        path = { 'lua/?.lua', 'lua/?/init.lua' },
       },
-      -- Make the server aware of Neovim runtime files
       workspace = {
         checkThirdParty = false,
-        library = {
-          vim.env.VIMRUNTIME
-          -- Depending on the usage, you might want to add additional paths
-          -- here.
-          -- '${3rd}/luv/library'
-          -- '${3rd}/busted/library'
-        }
-        -- Or pull in all of 'runtimepath'.
-        -- NOTE: this is a lot slower and will cause issues when working on
-        -- your own configuration.
-        -- See https://github.com/neovim/nvim-lspconfig/issues/3189
-        -- library = {
-        --   vim.api.nvim_get_runtime_file('', true),
-        -- }
-      }
+        library = { vim.env.VIMRUNTIME },
+      },
     })
   end,
-  settings = {
-    Lua = {}
-  }
+  settings = { Lua = {} },
 })
 
+-- Rust Analyzer
 vim.lsp.config('rust_analyzer', {
+  capabilities = capabilities,
   on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end,
   settings = {
     ['rust-analyzer'] = {
-      diagnostics = {
-        enable = false;
-      },
+      diagnostics = { enable = false },
       imports = {
-        granularity = {
-                group = "module",
-            },
-            prefix = "self",
+        granularity = { group = "module" },
+        prefix = "self",
       },
-      cargo = {
-          buildScripts = {
-              enable = true,
-          },
-      },
-      procMacro = {
-          enable = true
-      },
-    }
-  }
+      cargo = { buildScripts = { enable = true } },
+      procMacro = { enable = true },
+    },
+  },
 })
 
+-- Gopls
+vim.lsp.config('gopls', {
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
+-- Pyright
+vim.lsp.config('pyright', {
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
+-- Mason
 require("mason").setup()
-require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright" }
-}
+require("mason-lspconfig").setup({
+  ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright" },
+})
 
--- Lua LSP Setup
---vim.lsp.enable('lua_ls')
-
--- Go LSP Setup
--- vim.lsp.enable('gopls')
-
--- Python LSP Setup
--- vim.lsp.enable('pyright')
+-- Enable LSP servers
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('gopls')
+vim.lsp.enable('pyright')
