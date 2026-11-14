@@ -1,0 +1,45 @@
+-- Jump to last position when reopening a file
+vim.api.nvim_create_autocmd("BufReadPost", {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local line_count = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 1 and mark[1] <= line_count then
+      vim.api.nvim_win_set_cursor(0, mark)
+    end
+  end,
+})
+
+-- Highlight extra whitespace
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.api.nvim_set_hl(0, "ExtraWhitespace", { bg = "red" })
+  end,
+})
+
+-- Filetype-specific indentation
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "javascript", "json", "yaml", "sql" },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+  end,
+})
+
+-- Trim trailing whitespace on save
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   callback = function()
+--     local save = vim.fn.winsaveview()
+--     vim.cmd([[%s/\s\+$//e]])
+--     vim.fn.winrestview(save)
+--   end,
+-- })
+
+-- Netrw BEPO fix
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "netrw",
+  callback = function()
+    vim.keymap.set("n", "t", "j", { buffer = true, noremap = true })
+    vim.keymap.set("n", "s", "k", { buffer = true, noremap = true })
+    vim.keymap.set("n", "k", "s", { buffer = true, noremap = true })
+  end,
+})
