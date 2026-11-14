@@ -1,15 +1,23 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    -- "main" = rewrite: needs Neovim >= 0.12 and tree-sitter-cli; does not support lazy-loading
+    branch = "main",
     build = ":TSUpdate",
     lazy = false,
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "lua", "python", "go", "scala", "java", "bash", "json", "yaml", "markdown" },
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
+      -- Async, no-op for parsers that are already installed
+      require("nvim-treesitter").install({
+        "lua", "python", "go", "scala", "java", "bash", "json", "yaml", "markdown", "markdown_inline",
+      })
+
+      -- Highlighting is provided by Neovim itself: start it for every buffer whose
+      -- filetype has an installed parser (silently skipped otherwise)
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("user-treesitter", { clear = true }),
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
       })
     end,
   },

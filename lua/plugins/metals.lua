@@ -45,7 +45,7 @@ return {
       metals_config.settings = {
         showImplicitArguments = true,
         serverVersion = "1.6.6",
-        autoImportBuild = "initial",
+        automaticImportBuild = "initial",
         verboseCompilation = "true",
         --startMcpServer = true,
         --mcpClient = "claude"
