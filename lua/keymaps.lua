@@ -67,32 +67,3 @@ map("n", "wo", "<C-w>s", { noremap = true })
 map("n", "wp", "<C-w>o", { noremap = true })
 map("n", "w<SPACE>", ":split<CR>", { noremap = true })
 map("n", "w<CR>", ":vsplit<CR>", { noremap = true })
-
--- Autohighlight toggle (z/ to toggle)
-map("n", "z/", function()
-  if vim.b.auto_highlight then
-    vim.fn.setreg("/", "")
-    vim.b.auto_highlight = false
-    if vim.b.auto_highlight_group then
-      vim.api.nvim_del_augroup_by_id(vim.b.auto_highlight_group)
-      vim.b.auto_highlight_group = nil
-    end
-    vim.opt_local.updatetime = 4000
-    print("Highlight current word: off")
-  else
-    local group = vim.api.nvim_create_augroup("auto_highlight_" .. vim.api.nvim_get_current_buf(), { clear = true })
-    vim.api.nvim_create_autocmd("CursorHold", {
-      group = group,
-      buffer = 0,
-      callback = function()
-        local word = vim.fn.expand("<cword>")
-        vim.fn.setreg("/", "\\V\\<" .. vim.fn.escape(word, "\\") .. "\\>")
-      end,
-    })
-    vim.b.auto_highlight = true
-    vim.b.auto_highlight_group = group
-    vim.opt_local.updatetime = 500
-    vim.opt.hlsearch = true
-    print("Highlight current word: ON")
-  end
-end, { noremap = true })

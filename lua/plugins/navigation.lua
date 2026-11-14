@@ -20,8 +20,7 @@ return {
   },
 
   {
-    "phaazon/hop.nvim",
-    branch = "v2",
+    "smoka7/hop.nvim",
     keys = {
       { "<C-c>", function() require("hop").hint_words() end, desc = "Hop to word" },
     },

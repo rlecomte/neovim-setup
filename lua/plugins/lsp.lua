@@ -2,8 +2,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
     },
     event = { "BufReadPre", "BufNewFile" },
     keys = {
@@ -159,7 +159,6 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-vsnip",
     },
     config = function()
       local cmp = require("cmp")
@@ -201,14 +200,6 @@ return {
         }, {
           { name = "buffer" },
           { name = "path" },
-        }),
-      })
-
-      cmp.setup.filetype("gitcommit", {
-        sources = cmp.config.sources({
-          { name = "cmp_git" },
-        }, {
-          { name = "buffer" },
         }),
       })
 

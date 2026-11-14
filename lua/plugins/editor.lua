@@ -26,8 +26,6 @@ return {
     end,
   },
 
-  { "echasnovski/mini.nvim", version = "*" },
-
   {
     "numToStr/Comment.nvim",
     event = "BufReadPost",
