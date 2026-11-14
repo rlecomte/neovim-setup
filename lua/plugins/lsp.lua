@@ -4,6 +4,7 @@ return {
     dependencies = {
       "mason-org/mason.nvim",
       "mason-org/mason-lspconfig.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     event = { "BufReadPre", "BufNewFile" },
     keys = {
@@ -114,6 +115,19 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright", "ruff", "bashls" },
       })
+      -- Non-LSP tools (mason-lspconfig only handles language servers)
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "shellcheck", -- shell diagnostics, used by bashls
+          "shfmt",      -- shell formatting, used by bashls
+          "stylua",     -- Lua formatting
+        },
+        -- Its own trigger is VimEnter, which has already passed when this config is
+        -- lazy-loaded on BufReadPre, so run the check ourselves (async, no-op when
+        -- everything is installed)
+        run_on_start = false,
+      })
+      require("mason-tool-installer").check_install()
 
       -- No vim.lsp.enable() here: mason-lspconfig (automatic_enable, on by default)
       -- enables every server installed with Mason.
