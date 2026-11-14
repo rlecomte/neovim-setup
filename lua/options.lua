@@ -8,8 +8,10 @@ vim.opt.updatetime = 400
 -- Interface
 vim.opt.cursorline = true
 vim.opt.number = true
+vim.opt.signcolumn = "yes" -- always shown, so text doesn't shift when git/diagnostic signs appear
 vim.opt.mouse = "a"
 vim.opt.title = true
+vim.opt.winborder = "rounded" -- border on all floating windows (hover, diagnostics...)
 
 -- Indentation
 vim.opt.expandtab = true
@@ -30,6 +32,13 @@ vim.opt.sidescrolloff = 5
 -- Miscellaneous
 vim.opt.confirm = true
 vim.opt.modeline = false
+
+-- Diagnostics: message at the end of the cursor line only (most severe one, single
+-- line, nothing inserted); other lines keep just the underline and the sign
+vim.diagnostic.config({
+  virtual_text = { current_line = true },
+  severity_sort = true,
+})
 
 -- Clipboard
 vim.opt.clipboard = "unnamedplus"

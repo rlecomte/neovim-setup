@@ -43,6 +43,12 @@ return {
 
       metals_config.settings = {
         showImplicitArguments = true,
+        -- Inlay hints (shown via LspAttach in lsp.lua, toggled with <leader>ih)
+        inlayHints = {
+          inferredTypes = { enable = true },
+          implicitArguments = { enable = true },
+          typeParameters = { enable = true },
+        },
         automaticImportBuild = "initial",
         verboseCompilation = true,
         --startMcpServer = true,

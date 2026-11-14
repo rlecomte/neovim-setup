@@ -104,6 +104,7 @@ Ils sont surlignés en rouge et supprimés à l'enregistrement, **sauf** dans le
 | `gd` / `gD` / `gi` / `gh` | LSP : définition / déclaration / implémentation / doc |
 | `grr` / `grn` / `gra` / `grt` / `grx` | LSP : références / renommer / code action / type / codelens |
 | `<leader>rf` | formater le buffer |
+| `<leader>ih` | afficher / masquer les indices de types (inlay hints) |
 | `]d` / `[d`, `<leader>e` | diagnostics |
 | `]h` / `[h`, `<leader>h…` | hunks git (gitsigns) |
 | `<leader>a…` | Claude Code |

@@ -37,6 +37,34 @@ return {
           bmap("<leader>rf", vim.lsp.buf.format, "Format buffer")
           bmap("<leader>ca", vim.lsp.buf.code_action, "Code action")
           bmap("<leader>sh", vim.lsp.buf.signature_help, "Signature help")
+
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if not client then
+            return
+          end
+
+          -- Inlay hints (inferred types, parameter names), toggled with <leader>ih
+          if client:supports_method("textDocument/inlayHint") then
+            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+            bmap("<leader>ih", function()
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }), { bufnr = args.buf })
+            end, "Toggle inlay hints")
+          end
+
+          -- Highlight other references of the symbol under the cursor when it rests
+          if client:supports_method("textDocument/documentHighlight") then
+            local group = vim.api.nvim_create_augroup("user-lsp-highlight-" .. args.buf, { clear = true })
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+              group = group,
+              buffer = args.buf,
+              callback = vim.lsp.buf.document_highlight,
+            })
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
+              group = group,
+              buffer = args.buf,
+              callback = vim.lsp.buf.clear_references,
+            })
+          end
         end,
       })
 
@@ -72,9 +100,6 @@ return {
       -- Rust Analyzer
       vim.lsp.config("rust_analyzer", {
         capabilities = capabilities,
-        on_attach = function(client, bufnr)
-          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-        end,
         settings = {
           ["rust-analyzer"] = {
             imports = {
@@ -190,6 +215,11 @@ return {
       vim.opt_global.completeopt = { "menuone", "noinsert", "noselect" }
 
       cmp.setup({
+        -- Same rounded borders as the other popups (winborder)
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
         formatting = {
           format = lspkind.cmp_format({
             mode = "symbol",
