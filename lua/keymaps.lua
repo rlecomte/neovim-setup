@@ -55,6 +55,15 @@ map({"n", "x", "o"}, 'g"', "g0", { noremap = true })
 map({"n", "x", "o"}, "«", "<", { noremap = true })
 map({"n", "x", "o"}, "»", ">", { noremap = true })
 
+-- {é} = mot suivant (w est pris par les fenetres)
+map({"n", "x", "o"}, "é", "w", { noremap = true })
+map({"n", "x", "o"}, "É", "W", { noremap = true })
+-- objets texte mot / MOT : aé ié aÉ iÉ
+map({"x", "o"}, "aé", "aw", { noremap = true })
+map({"x", "o"}, "ié", "iw", { noremap = true })
+map({"x", "o"}, "aÉ", "aW", { noremap = true })
+map({"x", "o"}, "iÉ", "iW", { noremap = true })
+
 -- Gestion des fenetres
 map("n", "w", "<C-w>", { noremap = true })
 map("n", "W", "<C-w><C-w>", { noremap = true })

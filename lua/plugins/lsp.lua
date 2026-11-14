@@ -76,7 +76,6 @@ return {
         end,
         settings = {
           ["rust-analyzer"] = {
-            diagnostics = { enable = false },
             imports = {
               granularity = { group = "module" },
               prefix = "self",

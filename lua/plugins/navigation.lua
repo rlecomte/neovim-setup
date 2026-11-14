@@ -10,10 +10,11 @@ return {
     config = function()
       require("telescope").setup({
         defaults = { path_display = { "smart" } },
+        -- Compact dropdown for file pickers (the name is enough); live_grep keeps the
+        -- default layout so the preview shows the context around each match
         pickers = {
-          find_files = { theme = "dropdown" },
+          git_files = { theme = "dropdown" },
           oldfiles = { theme = "dropdown" },
-          live_grep = { theme = "dropdown" },
         },
       })
     end,
