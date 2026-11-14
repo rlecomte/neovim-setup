@@ -8,15 +8,19 @@ return {
     config = function()
       -- Async, no-op for parsers that are already installed
       require("nvim-treesitter").install({
-        "lua", "python", "go", "scala", "java", "bash", "json", "yaml", "markdown", "markdown_inline",
+        "lua", "python", "go", "rust", "scala", "java", "bash", "json", "yaml", "markdown", "markdown_inline",
       })
 
-      -- Highlighting is provided by Neovim itself: start it for every buffer whose
-      -- filetype has an installed parser (silently skipped otherwise)
+      -- Highlighting is provided by Neovim itself. Only start it when the language has
+      -- both a parser and a highlights query: vim.treesitter.start() turns off regex
+      -- syntax, so starting it without a query would leave the buffer with no colors.
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("user-treesitter", { clear = true }),
         callback = function(args)
-          pcall(vim.treesitter.start, args.buf)
+          local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+          if lang and vim.treesitter.language.add(lang) and vim.treesitter.query.get(lang, "highlights") then
+            vim.treesitter.start(args.buf, lang)
+          end
         end,
       })
     end,
