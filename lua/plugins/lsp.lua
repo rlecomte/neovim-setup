@@ -95,12 +95,25 @@ return {
       -- Pyright
       vim.lsp.config("pyright", {
         capabilities = capabilities,
+        settings = {
+          -- Imports are organized by ruff
+          pyright = { disableOrganizeImports = true },
+        },
+      })
+
+      -- Ruff: Python lint + formatting (<leader>rf); pyright keeps type checking
+      vim.lsp.config("ruff", {
+        capabilities = capabilities,
+        on_attach = function(client)
+          -- Leave hover (gh) to pyright
+          client.server_capabilities.hoverProvider = false
+        end,
       })
 
       -- Mason
       require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright", "bashls" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright", "ruff", "bashls" },
       })
 
       -- No vim.lsp.enable() here: mason-lspconfig (automatic_enable, on by default)
