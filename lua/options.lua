@@ -36,6 +36,3 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
 
 vim.opt.tags = "tags;"
-
--- Netrw
-vim.g.netrw_banner = 0

@@ -35,6 +35,4 @@ return {
       require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
     end,
   },
-
-  { "https://github.com/Weyaaron/nvim-training", pin = true, opts = {} },
 }

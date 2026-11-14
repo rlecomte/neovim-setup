@@ -61,13 +61,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.fn.winrestview(save)
   end,
 })
-
--- Netrw BEPO fix
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "netrw",
-  callback = function()
-    vim.keymap.set("n", "t", "j", { buffer = true, noremap = true })
-    vim.keymap.set("n", "s", "k", { buffer = true, noremap = true })
-    vim.keymap.set("n", "k", "s", { buffer = true, noremap = true })
-  end,
-})

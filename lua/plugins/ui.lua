@@ -26,6 +26,13 @@ return {
     end,
   },
 
+  -- LSP progress (indexing...) in the bottom right, for every language server
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    opts = {},
+  },
+
   {
     "folke/which-key.nvim",
     event = "VeryLazy",

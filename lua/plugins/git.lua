@@ -1,28 +1,5 @@
 return {
   {
-    "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
-  },
-
-  {
-    "NeogitOrg/neogit",
-    cmd = "Neogit",
-    config = function()
-      require("neogit").setup({
-        kind = "split",
-        mappings = {
-          status = {
-            ["t"] = "MoveDown",   -- BEPO: t = j (down)
-            ["s"] = "MoveUp",     -- BEPO: s = k (up)
-            ["j"] = "Stage",
-            ["k"] = false,
-          },
-        },
-      })
-    end,
-  },
-
-  {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPost",
     keys = {
