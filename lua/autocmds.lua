@@ -10,10 +10,33 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- Highlight extra whitespace
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function()
-    vim.api.nvim_set_hl(0, "ExtraWhitespace", { bg = "red" })
-  end,
+-- The colorscheme is already applied when this file runs, so set the group now
+-- and re-apply it on every later colorscheme change.
+local function set_extra_ws_hl()
+  vim.api.nvim_set_hl(0, "ExtraWhitespace", { bg = "red" })
+end
+set_extra_ws_hl()
+vim.api.nvim_create_autocmd("ColorScheme", { callback = set_extra_ws_hl })
+
+-- Show trailing whitespace in normal file buffers only (not terminals, plugin UIs...),
+-- and don't flag the spot being typed at in insert mode.
+local extra_ws_group = vim.api.nvim_create_augroup("extra-whitespace", { clear = true })
+local function set_extra_ws_match(pattern)
+  if vim.w.extra_ws_match then
+    pcall(vim.fn.matchdelete, vim.w.extra_ws_match)
+    vim.w.extra_ws_match = nil
+  end
+  if vim.bo.buftype == "" and vim.bo.modifiable then
+    vim.w.extra_ws_match = vim.fn.matchadd("ExtraWhitespace", pattern)
+  end
+end
+vim.api.nvim_create_autocmd({ "BufWinEnter", "InsertLeave" }, {
+  group = extra_ws_group,
+  callback = function() set_extra_ws_match([[\s\+$]]) end,
+})
+vim.api.nvim_create_autocmd("InsertEnter", {
+  group = extra_ws_group,
+  callback = function() set_extra_ws_match([[\s\+\%#\@<!$]]) end,
 })
 
 -- Filetype-specific indentation

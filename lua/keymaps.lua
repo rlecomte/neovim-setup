@@ -8,52 +8,52 @@ map("n", "<F12>f", ":silent !firefox %<CR>", { noremap = true })
 
 -- BEPO layout: [HJKL] -> {CTSR}
 -- {cr} = gauche / droite
-map({"n", "v"}, "c", "h", { noremap = true })
-map({"n", "v"}, "r", "l", { noremap = true })
+map({"n", "x", "o"}, "c", "h", { noremap = true })
+map({"n", "x", "o"}, "r", "l", { noremap = true })
 -- {ts} = haut / bas
-map({"n", "v"}, "t", "j", { noremap = true })
-map({"n", "v"}, "s", "k", { noremap = true })
+map({"n", "x", "o"}, "t", "j", { noremap = true })
+map({"n", "x", "o"}, "s", "k", { noremap = true })
 -- {CR} = haut / bas de l'ecran
-map({"n", "v"}, "C", "H", { noremap = true })
-map({"n", "v"}, "R", "L", { noremap = true })
+map({"n", "x", "o"}, "C", "H", { noremap = true })
+map({"n", "x", "o"}, "R", "L", { noremap = true })
 -- {TS} = joindre / aide
-map({"n", "v"}, "T", "J", { noremap = true })
-map({"n", "v"}, "S", "K", { noremap = true })
+map({"n", "x", "o"}, "T", "J", { noremap = true })
+map({"n", "x", "o"}, "S", "K", { noremap = true })
 -- Corollaire : repli suivant / precedent
-map({"n", "v"}, "zs", "zj", { noremap = true })
-map({"n", "v"}, "zt", "zk", { noremap = true })
+map({"n", "x", "o"}, "zs", "zj", { noremap = true })
+map({"n", "x", "o"}, "zt", "zk", { noremap = true })
 
 -- {HJKL} <- [CTSR]
 -- {J} = Jusqu'a
-map({"n", "v"}, "j", "t", { noremap = true })
-map({"n", "v"}, "J", "T", { noremap = true })
+map({"n", "x", "o"}, "j", "t", { noremap = true })
+map({"n", "x", "o"}, "J", "T", { noremap = true })
 -- {L} = Change
-map({"n", "v"}, "l", "c", { noremap = true })
-map({"n", "v"}, "L", "C", { noremap = true })
+map({"n", "x", "o"}, "l", "c", { noremap = true })
+map({"n", "x", "o"}, "L", "C", { noremap = true })
 -- {H} = Remplace
-map({"n", "v"}, "h", "r", { noremap = true })
-map({"n", "v"}, "H", "R", { noremap = true })
+map({"n", "x", "o"}, "h", "r", { noremap = true })
+map({"n", "x", "o"}, "H", "R", { noremap = true })
 -- {K} = Substitue
-map({"n", "v"}, "k", "s", { noremap = true })
-map({"n", "v"}, "K", "S", { noremap = true })
+map({"n", "x", "o"}, "k", "s", { noremap = true })
+map({"n", "x", "o"}, "K", "S", { noremap = true })
 -- Corollaire : correction orthographique
-map({"n", "v"}, "]k", "]s", { noremap = true })
-map({"n", "v"}, "[k", "[s", { noremap = true })
+map({"n", "x", "o"}, "]k", "]s", { noremap = true })
+map({"n", "x", "o"}, "[k", "[s", { noremap = true })
 
 -- Desambiguation de {g}
-map({"n", "v"}, "gs", "gk", { noremap = true })
-map({"n", "v"}, "gt", "gj", { noremap = true })
+map({"n", "x", "o"}, "gs", "gk", { noremap = true })
+map({"n", "x", "o"}, "gt", "gj", { noremap = true })
 -- onglet precedent / suivant
 map("n", "gb", "gT", { noremap = true })
 map("n", "gé", "gt", { noremap = true })
 map("n", "gB", ":exe 'silent! tabfirst'<CR>", { noremap = true })
 map("n", "gÉ", ":exe 'silent! tablast'<CR>", { noremap = true })
 -- debut de la ligne ecran
-map({"n", "v"}, 'g"', "g0", { noremap = true })
+map({"n", "x", "o"}, 'g"', "g0", { noremap = true })
 
 -- <> en direct
-map({"n", "v"}, "«", "<", { noremap = true })
-map({"n", "v"}, "»", ">", { noremap = true })
+map({"n", "x", "o"}, "«", "<", { noremap = true })
+map({"n", "x", "o"}, "»", ">", { noremap = true })
 
 -- Gestion des fenetres
 map("n", "w", "<C-w>", { noremap = true })

@@ -5,28 +5,37 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
+    event = { "BufReadPre", "BufNewFile" },
     keys = {
-      -- LSP mappings
-      { "gD", vim.lsp.buf.declaration, desc = "Go to declaration" },
-      { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
-      { "gh", vim.lsp.buf.hover, desc = "Hover documentation" },
-      { "gi", vim.lsp.buf.implementation, desc = "Go to implementation" },
-      { "gr", "<cmd>Telescope lsp_references<cr>", desc = "Find references" },
-      { "<leader>rn", vim.lsp.buf.rename, desc = "Rename symbol" },
-      { "<leader>rf", vim.lsp.buf.format, desc = "Format buffer" },
-      { "<leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
-      { "<leader>sh", vim.lsp.buf.signature_help, desc = "Signature help" },
-
-      -- Diagnostics
-      { "[d", vim.diagnostic.goto_prev, desc = "Previous diagnostic" },
-      { "]d", vim.diagnostic.goto_next, desc = "Next diagnostic" },
+      -- Diagnostics (global: work in any buffer)
+      { "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, desc = "Previous diagnostic" },
+      { "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, desc = "Next diagnostic" },
       { "<leader>e", vim.diagnostic.open_float, desc = "Open diagnostic float" },
       { "<leader>ql", vim.diagnostic.setloclist, desc = "Diagnostics" },
       { "<leader>qa", vim.diagnostic.setqflist, desc = "All diagnostics" },
       { "<leader>qw", function() vim.diagnostic.setqflist({ severity = "W" }) end, desc = "Warning diagnostics" },
-      { "<leader>qe", function() vim.diagnostic.setqflist({ severity = "E" }) end, desc = "Warning diagnostics" },
+      { "<leader>qe", function() vim.diagnostic.setqflist({ severity = "E" }) end, desc = "Error diagnostics" },
     },
     config = function()
+      -- LSP mappings: buffer-local, only where a language server is attached
+      -- (also applies to metals, which is started by nvim-metals)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("user-lsp-attach", { clear = true }),
+        callback = function(args)
+          local function bmap(lhs, rhs, desc)
+            vim.keymap.set("n", lhs, rhs, { buffer = args.buf, desc = desc })
+          end
+          bmap("gD", vim.lsp.buf.declaration, "Go to declaration")
+          bmap("gd", vim.lsp.buf.definition, "Go to definition")
+          bmap("gh", vim.lsp.buf.hover, "Hover documentation")
+          bmap("gi", vim.lsp.buf.implementation, "Go to implementation")
+          bmap("gr", "<cmd>Telescope lsp_references<cr>", "Find references")
+          bmap("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+          bmap("<leader>rf", vim.lsp.buf.format, "Format buffer")
+          bmap("<leader>ca", vim.lsp.buf.code_action, "Code action")
+          bmap("<leader>sh", vim.lsp.buf.signature_help, "Signature help")
+        end,
+      })
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -97,8 +106,7 @@ return {
       vim.lsp.enable("rust_analyzer")
       vim.lsp.enable("gopls")
       vim.lsp.enable("pyright")
-      vim.lsp.enable("pyright")
-      vim.lsp.enable("metals")
+      -- metals is started by nvim-metals (see plugins/metals.lua), not here
     end,
   },
 
