@@ -100,14 +100,11 @@ return {
       -- Mason
       require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright", "bashls" },
       })
 
-      -- Enable LSP servers
-      vim.lsp.enable("lua_ls")
-      vim.lsp.enable("rust_analyzer")
-      vim.lsp.enable("gopls")
-      vim.lsp.enable("pyright")
+      -- No vim.lsp.enable() here: mason-lspconfig (automatic_enable, on by default)
+      -- enables every server installed with Mason.
       -- metals is started by nvim-metals (see plugins/metals.lua), not here
     end,
   },
