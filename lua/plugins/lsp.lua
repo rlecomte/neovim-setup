@@ -29,7 +29,9 @@ return {
           bmap("gd", vim.lsp.buf.definition, "Go to definition")
           bmap("gh", vim.lsp.buf.hover, "Hover documentation")
           bmap("gi", vim.lsp.buf.implementation, "Go to implementation")
-          bmap("gr", "<cmd>Telescope lsp_references<cr>", "Find references")
+          -- Override Neovim's default grr (quickfix) with Telescope; keep the other
+          -- built-in gr* maps (grn, gra, gri, grt, grx), so no bare "gr" here
+          bmap("grr", "<cmd>Telescope lsp_references<cr>", "Find references")
           bmap("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
           bmap("<leader>rf", vim.lsp.buf.format, "Format buffer")
           bmap("<leader>ca", vim.lsp.buf.code_action, "Code action")
