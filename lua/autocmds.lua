@@ -39,15 +39,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   callback = function() set_extra_ws_match([[\s\+\%#\@<!$]]) end,
 })
 
--- Filetype-specific indentation
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "javascript", "json", "yaml", "sql" },
-  callback = function()
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
-  end,
-})
-
 -- Trim trailing whitespace on save
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 --   callback = function()

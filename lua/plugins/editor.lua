@@ -27,12 +27,6 @@ return {
   },
 
   {
-    "numToStr/Comment.nvim",
-    event = "BufReadPost",
-    opts = {},
-  },
-
-  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = function()
