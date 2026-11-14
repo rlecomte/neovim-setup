@@ -39,14 +39,28 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   callback = function() set_extra_ws_match([[\s\+\%#\@<!$]]) end,
 })
 
--- Trim trailing whitespace on save
--- vim.api.nvim_create_autocmd("BufWritePre", {
---   callback = function()
---     local save = vim.fn.winsaveview()
---     vim.cmd([[%s/\s\+$//e]])
---     vim.fn.winrestview(save)
---   end,
--- })
+-- Trim trailing whitespace on save, except in these git repos (matched on the
+-- repo root directory name). conduktor-docs: Markdown/MDX where trailing spaces
+-- can be meaningful (hard line breaks) and trimming would pollute PR diffs.
+local trim_ws_excluded_repos = {
+  ["conduktor-docs"] = true,
+}
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = vim.api.nvim_create_augroup("trim-trailing-whitespace", { clear = true }),
+  callback = function(args)
+    if vim.bo[args.buf].buftype ~= "" or not vim.bo[args.buf].modifiable then
+      return
+    end
+    local root = vim.fs.root(args.buf, ".git")
+    if root and trim_ws_excluded_repos[vim.fs.basename(root)] then
+      return
+    end
+    local save = vim.fn.winsaveview()
+    vim.cmd([[keeppatterns %s/\s\+$//e]])
+    vim.fn.winrestview(save)
+  end,
+})
 
 -- Netrw BEPO fix
 vim.api.nvim_create_autocmd("FileType", {
