@@ -1,12 +1,14 @@
 return {
   {
-    "ellisonleao/gruvbox.nvim",
+    "sainnhe/everforest",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.opt.background = "dark"
-      vim.cmd("colorscheme gruvbox")
-      vim.api.nvim_set_hl(0, "LineNr", { fg = "DarkGrey", bold = false })
+      -- Settings are globals read when the colorscheme loads
+      vim.g.everforest_background = "hard" -- contrast: "hard" | "medium" | "soft"
+      vim.g.everforest_better_performance = 1
+      vim.opt.background = "dark" -- "light" for the light variant
+      vim.cmd("colorscheme everforest")
     end,
   },
 
@@ -16,7 +18,8 @@ return {
     "nvim-lualine/lualine.nvim",
     config = function()
       require("lualine").setup({
-        options = { theme = "gruvbox" },
+        -- Follow the active colorscheme
+        options = { theme = "auto" },
         sections = {
           lualine_c = {
             { "filename", path = 1 },
